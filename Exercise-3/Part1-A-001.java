@@ -1,52 +1,43 @@
-import lejos.nxt.Button;
 import lejos.nxt.LightSensor;
 import lejos.nxt.Motor;
-import lejos.nxt.MotorPort;
 import lejos.nxt.SensorPort;
-import lejos.nxt.addon.OpticalDistanceSensor;
 import lejos.robotics.navigation.DifferentialPilot;
-import lejos.util.Delay;
 
 
-public class DistaneControl {
-
-	/**
-	 * @param args
-	 */
-	OpticalDistanceSensor sensor = new OpticalDistanceSensor(SensorPort.S3);
-	DifferentialPilot pilot = new DifferentialPilot(2.1f, 4.4f, Motor.C, Motor.B);
+public class LightLoop {
+	
+	DifferentialPilot pilot = new DifferentialPilot(2.1f, 4.4f, Motor.C,
+			Motor.B);
 	LightSensor lightsensor = new LightSensor(SensorPort.S1);
 	LightSensor lightsensor2 = new LightSensor(SensorPort.S2);
+	
 
-	public static void main(String[] args) {
-		Button.waitForAnyPress();
-		
-	
-	}	
-	
 	public void go() {
+
+		
+		while (true) {
 			
-		int initialdistance = sensor.getDistance();
+			System.out.println("1 is " + lightsensor.getLightValue());
+			System.out.println("2 is " + lightsensor2.getLightValue());
 			
-			//Light Sensor
-		while(pilot.isMoving()) {
-			Delay.msDelay(1000);
+			pilot.setTravelSpeed(10);
+			pilot.forward();
 			
-			if (sensor.getDistance() < initialdistance) { 
-				pilot.setTravelSpeed((initialdistance-sensor.getDistance())/100);
-			}
-			
-			if(lightsensor.getLightValue() < 50 & lightsensor2.getLightValue() < 50) {
-				pilot.rotate(10);
-			}
-			else if(lightsensor.getLightValue() < 50) {
-				pilot.rotate(5);
-			}	
-			else if(lightsensor2.getLightValue() < 50) {
+			if (lightsensor.getLightValue() < 38) {
+				pilot.rotate(5);			
+			} 
+			else if (lightsensor2.getLightValue() < 38) {
 				pilot.rotate(-5);
+				}
+			else {
+				
 			}
 		}
-	
 	}
-	
+
+	public static void main(String[] args) {
+		LightLoop control = new LightLoop();
+		control.go();
+	}
+
 }
