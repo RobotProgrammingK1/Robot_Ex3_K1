@@ -28,22 +28,20 @@ public class ArbyGriddy {
 			pilot.setTravelSpeed(3);
 			pilot.forward();
 			
-			if (lightsensor.getLightValue() < 34 ) {
+			if (lightsensor.getLightValue() < 35 && lightsensor2.getLightValue() < 41) {
 				pilot.travel(2.5);
 				pilot.rotate(135);
-				pilot.travel(10);
 			} 
-			else if (lightsensor2.getLightValue() < 38) {
-				pilot.travel(2.5);
-				pilot.rotate(-135);
-				pilot.travel(10);
+			else if (lightsensor2.getLightValue() < 41 && lightsensor.getLightValue() > 35) {
+				pilot.rotate(-10);
+				
 				}
-			else {
-				
+			else if(lightsensor.getLightValue() < 35 && lightsensor2.getLightValue() > 41) 
+				pilot.rotate(10);
 			}
 				
 			}
-	}
+	
 	public static void main(String[] args) {
 		ArbyGriddy control = new ArbyGriddy();
 		control.go();
