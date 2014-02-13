@@ -1,3 +1,4 @@
+import lejos.nxt.Button;
 import lejos.nxt.LightSensor;
 import lejos.nxt.Motor;
 import lejos.nxt.SensorPort;
@@ -13,25 +14,29 @@ public class LightLoop {
 	
 
 	public void go() {
-
+		
+		Button.waitForAnyPress();
+		
+		int base = lightsensor.getLightValue();
+		int base2 = lightsensor2.getLightValue();
 		
 		while (true) {
 			
 			System.out.println("1 is " + lightsensor.getLightValue());
 			System.out.println("2 is " + lightsensor2.getLightValue());
 			
-			pilot.setTravelSpeed(10);
+			pilot.setTravelSpeed(7);
 			pilot.forward();
 			
-			if (lightsensor.getLightValue() < 38) {
-				pilot.rotate(5);			
+			if (lightsensor.getLightValue() < 35) {
+				pilot.rotate(10);			
 			} 
-			else if (lightsensor2.getLightValue() < 38) {
-				pilot.rotate(-5);
+			else if (lightsensor2.getLightValue() < 41) {
+				pilot.rotate(-10);
 				}
 			else {
 				
-			}
+			} 
 		}
 	}
 
