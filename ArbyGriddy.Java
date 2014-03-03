@@ -8,7 +8,6 @@ import lejos.robotics.navigation.DifferentialPilot;
 public class ArbyGriddy {
 	
 	
-	
 	DifferentialPilot pilot = new DifferentialPilot(2.1f, 4.4f, Motor.C,
 			Motor.B);
 	LightSensor lightsensor = new LightSensor(SensorPort.S1);
