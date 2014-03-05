@@ -1,0 +1,46 @@
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Queue;
+
+import rp13.search.interfaces.Agenda;
+
+public class QueueAgenda<StateT> implements Agenda<StateT> {
+
+	private Queue<StateT> queue;
+
+	public QueueAgenda() {
+		this.queue = new LinkedList<StateT>();
+
+	}
+
+	@Override
+	public Iterator<StateT> iterator() {
+		// TODO Auto-generated method stub
+		return queue.iterator();
+	}
+
+	@Override
+	public void push(StateT _item) {
+		// TODO Auto-generated method stub
+		queue.add(_item);
+	}
+
+	@Override
+	public StateT pop() {
+		// TODO Auto-generated method stub
+		return queue.remove();
+	}
+
+	@Override
+	public boolean isEmpty() {
+		// TODO Auto-generated method stub
+		return queue.isEmpty();
+	}
+
+	@Override
+	public boolean contains(StateT _item) {
+		// TODO Auto-generated method stub
+		return queue.contains(_item);
+	}
+
+}
