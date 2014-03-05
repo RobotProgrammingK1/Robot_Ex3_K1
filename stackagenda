@@ -1,0 +1,45 @@
+import java.util.Iterator;
+import java.util.Stack;
+
+import rp13.search.interfaces.Agenda;
+
+
+public class StackAgenda<StateT> implements Agenda<StateT> {
+
+	private Stack<StateT> Stack;
+	
+	public StackAgenda(){
+		this.Stack = new Stack<StateT>();
+	}
+	
+	@Override
+	public Iterator<StateT> iterator() {
+		// TODO Auto-generated method stub
+		return Stack.iterator();
+	}
+
+	@Override
+	public void push(StateT _item) {
+		// TODO Auto-generated method stub
+		Stack.add(_item);
+	}
+
+	@Override
+	public StateT pop() {
+		// TODO Auto-generated method stub
+		return Stack.pop();
+	}
+
+	@Override
+	public boolean isEmpty() {
+		// TODO Auto-generated method stub
+		return Stack.isEmpty();
+	}
+
+	@Override
+	public boolean contains(StateT _item) {
+		// TODO Auto-generated method stub
+		return Stack.contains(_item);
+	}
+		
+}
