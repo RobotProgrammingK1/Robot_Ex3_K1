@@ -1,0 +1,63 @@
+import java.util.LinkedList;
+import java.util.List;
+
+import rp13.search.interfaces.GoalTest;
+import rp13.search.interfaces.SuccessorFunction;
+import rp13.search.problem.puzzle.EightPuzzle;
+import rp13.search.util.ActionStatePair;
+import rp13.search.util.EqualityGoalTest;
+
+public class BreadthFirstSearch<ActionT, StateT> {
+
+	private QueueAgenda<StateT> _agenda;
+	private GoalTest<StateT> _goaltest;
+	private SuccessorFunction<ActionT, StateT> _successor;
+
+	public BreadthFirstSearch(GoalTest<StateT> goal,
+			SuccessorFunction<ActionT, StateT> succ) {
+		this._goaltest = goal;
+		this._successor = succ;
+
+		this._agenda = new QueueAgenda<StateT>();
+	}
+
+	public StateT search(StateT state) {
+
+		List<StateT> explored = new LinkedList<StateT>();
+		_agenda.push(state);
+
+		while (!_agenda.isEmpty()) {
+			StateT node = _agenda.pop();
+			System.out.println(node);
+
+			if (_goaltest.isGoal(node)) {
+				return node;
+			} else {
+				// generate successors
+				// ...
+				List<ActionStatePair<ActionT, StateT>> successors = new LinkedList<ActionStatePair<ActionT, StateT>>();
+				_successor.getSuccessors(node, successors);
+				for (ActionStatePair<ActionT, StateT> current : successors) {
+					StateT currentState = current.getState();
+					if (!explored.contains(current))
+						_agenda.push(currentState);
+				}
+			}
+		}
+
+		return null;
+
+	}
+
+	public static void main(String[] args) {
+		EightPuzzle input = EightPuzzle.randomEightPuzzle();
+		EightPuzzle goal = EightPuzzle.orderedEightPuzzle();
+
+		BreadthFirstSearch<EightPuzzle.PuzzleMove, EightPuzzle> bfs = new BreadthFirstSearch<EightPuzzle.PuzzleMove, EightPuzzle>(
+				new EqualityGoalTest<EightPuzzle>(goal),
+				new EightPuzzleSuccessorFunction());
+
+		System.out.println(bfs.search(input));
+	}
+
+}
