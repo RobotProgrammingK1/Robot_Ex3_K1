@@ -1,0 +1,62 @@
+import java.util.Stack;
+
+import rp13.search.interfaces.GoalTest;
+import rp13.search.interfaces.SuccessorFunction;
+import rp13.search.problem.puzzle.EightPuzzle;
+import rp13.search.util.ActionStatePair;
+import rp13.search.util.EqualityGoalTest;
+
+public class DepthFirstSearch<ActionT, StateT> {
+
+	private StackAgenda<StateT> _agenda;
+	private GoalTest<StateT> _goaltest;
+	private SuccessorFunction<ActionT, StateT> _successor;
+
+	public DepthFirstSearch(GoalTest<StateT> goal,
+			SuccessorFunction<ActionT, StateT> succ) {
+		this._goaltest = goal;
+		this._successor = succ;
+
+		this._agenda = new StackAgenda<StateT>();
+	}
+
+	public StateT search(StateT state) {
+
+		Stack<StateT> explored = new Stack<StateT>();
+		_agenda.push(state);
+
+		while (!_agenda.isEmpty()) {
+			StateT node = _agenda.pop();
+			System.out.println(node);
+			explored.add(node);
+
+			if (_goaltest.isGoal(node)) {
+				return node;
+			} else {
+
+				Stack<ActionStatePair<ActionT, StateT>> successors = new Stack<ActionStatePair<ActionT, StateT>>();
+				_successor.getSuccessors(node, successors);
+				for (ActionStatePair<ActionT, StateT> current : successors) {
+					StateT currentState = current.getState();
+					if (!explored.contains(current))
+						_agenda.push(currentState);
+				}
+			}
+		}
+
+		return null;
+
+	}
+
+	public static void main(String[] args) {
+		EightPuzzle input = EightPuzzle.randomEightPuzzle();
+		EightPuzzle goal = EightPuzzle.orderedEightPuzzle();
+
+		DepthFirstSearch<EightPuzzle.PuzzleMove, EightPuzzle> depth = new DepthFirstSearch<EightPuzzle.PuzzleMove, EightPuzzle>(
+				new EqualityGoalTest<EightPuzzle>(goal),
+				new EightPuzzleSuccessorFunction());
+
+		System.out.println(depth.search(input));
+	}
+
+}
